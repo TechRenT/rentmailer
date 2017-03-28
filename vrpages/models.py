@@ -25,3 +25,9 @@ class PolishedUrl(models.Model):
     unsubscribe_from_vrpage = models.BooleanField(default=False)
 
 
+class MessageTemplate(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    vrpage = ForeignKey(VRPage)
+    template_type = models.CharField(max_length=10)
+    subject = models.CharField(max_length=255)
+    message_body = models.TextField()
