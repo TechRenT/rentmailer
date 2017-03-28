@@ -20,7 +20,7 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from . import views
 
 urlpatterns = [
-    url(r'^vrpages/', include('vrpages.urls')),
+    url(r'^vrpages/', include('vrpages.urls', namespace='vrpages')),
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.home_page),
 ]
