@@ -7,9 +7,13 @@ from . import forms
 from . import models
 
 # Create your views here.
-def send_email(request):
-    message_template = models.MessageTemplate.objects.get(vrpage_id=1)
-    polished_url = models.PolishedUrl.objects.get(vrpage_id=1)
+def messages_list(request):
+    messages = models.MessageTemplate.objects.all()
+    return render(request, 'vrpages/messages_list.html', {'messages': messages})
+
+def send_email(request, pk):
+    message_template = models.MessageTemplate.objects.get(vrpage_id=pk)
+    polished_url = models.PolishedUrl.objects.get(vrpage_id=pk)
     message_variables = {'contactname': polished_url.contact_name,
                          'url': polished_url.polished_url,
                          'anchortext': polished_url.anchor_text,
