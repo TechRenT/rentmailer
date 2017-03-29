@@ -4,15 +4,27 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
 from . import forms
+from . import models
 
 # Create your views here.
 def send_email(request):
-    form = forms.SendEmailForm()
+    message_template = models.MessageTemplate.objects.get(vrpage_id=1)
+    polished_url = models.PolishedUrl.objects.get(vrpage_id=1)
+    message_variables = {'contactname': polished_url.contact_name,
+                         'url': polished_url.polished_url,
+                         'anchortext': polished_url.anchor_text,
+                         'pagetitle': polished_url.page_title
+                         }
+    message_subject = message_template.subject.format(**message_variables)
+    message_body = message_template.message_body.format(**message_variables)
+    form = forms.SendEmailForm(initial={'email': polished_url.polished_email,
+                                        'subject': message_subject,
+                                        'message': message_body})
     if request.method == 'POST':
         form = forms.SendEmailForm(request.POST)
         if form.is_valid():
             send_mail(
-                'Suggestion from {}'.format(form.cleaned_data['name']),
+                form.cleaned_data['subject'],
                 form.cleaned_data['message'],
                 '{} <{}>'.format('Renelle Tigue', 'purpose.renelle@gmail.com'),
                 [form.cleaned_data['email']],
