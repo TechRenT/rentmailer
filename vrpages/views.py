@@ -19,7 +19,7 @@ def send_email(request):
     message_body = message_template.message_body.format(**message_variables)
     form = forms.SendEmailForm(initial={'email': polished_url.polished_email,
                                         'subject': message_subject,
-                                        'message': message_body})
+                                        'message_body': message_body})
     if request.method == 'POST':
         form = forms.SendEmailForm(request.POST)
         if form.is_valid():

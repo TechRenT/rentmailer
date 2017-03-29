@@ -1,7 +1,13 @@
 from django import forms
 
+from . import models
 
-class SendEmailForm(forms.Form):
-    email = forms.EmailField()
-    subject = forms.CharField()
-    message = forms.CharField(widget=forms.Textarea)
+
+class SendEmailForm(forms.ModelForm):
+    class Meta:
+        model = models.EmailMessage
+        fields = [
+            'email',
+            'subject',
+            'message_body'    
+        ]
