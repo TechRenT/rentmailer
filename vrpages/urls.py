@@ -4,5 +4,6 @@ from . import views
 
 urlpatterns = [
     url(r'^messages/$', views.messages_list, name='messages_list'),
-    url(r'^messages/(?P<pk>\d+)/$', views.send_email, name='send_email'),
+    url(r'^messages/(?P<pk>\d+)/no_email/$', views.no_email, name='no_email'),
+    url(r'^messages/(?P<pk>\d+)/(?P<template_type>\w+)/$', views.send_email, name='send_email'),
 ]

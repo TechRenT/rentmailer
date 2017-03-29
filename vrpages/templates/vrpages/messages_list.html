@@ -18,7 +18,7 @@
                 {% for message in messages %}
                 <tr>
                     <th scope="row">{{ message.pk }}</th>
-                    <td><a href="{% url 'vrpages:send_email' pk=message.vrpage_id %}">{{ message }}</a></td>
+                    <td><a href="{% url 'vrpages:send_email' pk=message.vrpage_id template_type=message.template_type %}">{{ message }}</a></td>
                     <td>{{ message.template_type }}</td>
                     <td>{{ message.vrpage}}</td>
                 </tr>
