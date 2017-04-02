@@ -10,6 +10,10 @@ from . import forms
 from . import models
 
 # Create your views here.
+def vrpages_list(request):
+    vrpages = models.VRPage.objects.all()
+    return render(request, 'vrpages/vrpages_list.html', {'vrpages': vrpages})
+
 def messages_list(request):
     messages = models.MessageTemplate.objects.all()
     return render(request, 'vrpages/messages_list.html', {'messages': messages})
