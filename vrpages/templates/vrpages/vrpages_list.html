@@ -21,7 +21,7 @@
                 {% for vrpage in vrpages %}
                 <tr>
                     <th scope="row">{{ vrpage.pk }}</th>
-                    <td><a href="#">{{ vrpage }}</a></td>
+                    <td><a href="{% url 'vrpages:vrpage_detail' pk=vrpage.pk %}">{{ vrpage }}</a></td>
                     <td>{{ vrpage.email_address }}</td>
                     <td>{{ vrpage.email_username }}</td>
                     <td>{{ vrpage.email_password }}</td>
@@ -31,5 +31,6 @@
                 {% endfor %}
             </tbody>
         </table>
+        <a href="#"><button type="button" class="btn btn-success">Add VR Page</button></a>
     </div>
 {% endblock %}

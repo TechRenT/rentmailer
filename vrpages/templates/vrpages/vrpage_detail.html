@@ -1,0 +1,40 @@
+{% extends 'layout.html' %}
+
+{% block title %}{{ vrpage }}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h2 class="my-4">{{ vrpage }}</h2>
+        <table class="table table-hover">
+            <tbody>
+                <tr>
+                    <th scope="row">VR Page Name</th>
+                    <td>{{ vrpage }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Email Address</th>
+                    <td>{{ vrpage.email_address }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Email Username</th>
+                    <td>{{ vrpage.email_username }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Email Password</th>
+                    <td>{{ vrpage.email_password }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Email Server</th>
+                    <td>{{ vrpage.email_server }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Email From Name</th>
+                    <td>{{ vrpage.email_from_name }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <a href="{% url 'vrpages:vrpages_list' %}"><button type="button" class="btn btn-primary">Go Back</button></a>
+        <button type="button" class="btn btn-success">Edit</button>
+        <button type="button" class="btn btn-danger">Delete</button>
+    </div>
+{% endblock %}

@@ -14,6 +14,10 @@ def vrpages_list(request):
     vrpages = models.VRPage.objects.all()
     return render(request, 'vrpages/vrpages_list.html', {'vrpages': vrpages})
 
+def vrpage_detail(request, pk):
+    vrpage = get_object_or_404(models.VRPage, pk=pk)
+    return render(request, 'vrpages/vrpage_detail.html', {'vrpage': vrpage})
+
 def messages_list(request):
     messages = models.MessageTemplate.objects.all()
     return render(request, 'vrpages/messages_list.html', {'messages': messages})
