@@ -45,6 +45,9 @@ class MessageTemplate(models.Model):
     def __str__(self):
         return self.subject
 
+    def get_absolute_url(self):
+        return reverse("vrpages:template_detail", kwargs={"pk": self.pk})
+
 
 class EmailMessage(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)

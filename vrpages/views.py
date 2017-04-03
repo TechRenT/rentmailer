@@ -49,6 +49,38 @@ class VRPageDeleteView(DeleteView):
     success_url = reverse_lazy('vrpages:vrpages_list')
 
 
+def templates_list(request):
+    templates = models.MessageTemplate.objects.all()
+    return render(request, 'vrpages/templates_list.html', {'templates': templates})
+
+def template_detail(request, pk):
+    template = get_object_or_404(models.MessageTemplate, pk=pk)
+    return render(request, 'vrpages/template_detail.html', {'template': template})
+
+
+class MessageTemplateCreateView(CreateView):
+    fields = ("vrpage",
+              "template_type",
+              "subject",
+              "message_body"
+    )
+    model = models.MessageTemplate
+
+
+class MessageTemplateUpdateView(UpdateView):
+    fields = ("vrpage",
+              "template_type",
+              "subject",
+              "message_body"
+    )
+    model = models.MessageTemplate
+
+
+class MessageTemplateDeleteView(DeleteView):
+    model = models.MessageTemplate
+    success_url = reverse_lazy('vrpages:templates_list')
+
+
 def messages_list(request):
     messages = models.MessageTemplate.objects.all()
     return render(request, 'vrpages/messages_list.html', {'messages': messages})
@@ -60,7 +92,7 @@ def no_email(request, pk):
 def send_email(request, pk, template_type):
     vrpage = models.VRPage.objects.get(pk=pk)
     message_template = models.MessageTemplate.objects.get(vrpage_id=pk, template_type=template_type)
-    if template_type == 'first':
+    if template_type == 'First':
         try:
             polished_url = models.PolishedUrl.objects.filter(vrpage_id=pk, first_message_sent=False)[0]
         except IndexError:
@@ -91,12 +123,12 @@ def send_email(request, pk, template_type):
                     polished_url.first_message_sent = True
                     polished_url.save()
                     email_message = form.save(commit=False)
-                    email_message.message_type = 'first'
+                    email_message.message_type = 'First'
                     email_message.polished_url = polished_url
                     email_message.save()
                     return HttpResponseRedirect(reverse('vrpages:send_email', args=[pk, template_type]))
             return render(request, 'vrpages/send_email.html', {'form': form})
-    elif template_type == 'second':
+    elif template_type == 'Second':
         try:
             polished_url = models.PolishedUrl.objects.filter(vrpage_id=pk,
                                                             first_message_sent=True,
@@ -140,7 +172,7 @@ def send_email(request, pk, template_type):
                         polished_url.second_message_sent = True
                         polished_url.save()
                         email_message = form.save(commit=False)
-                        email_message.message_type = 'second'
+                        email_message.message_type = 'Second'
                         email_message.polished_url = polished_url
                         email_message.save()
                         return HttpResponseRedirect(reverse('vrpages:send_email', args=[pk, template_type]))

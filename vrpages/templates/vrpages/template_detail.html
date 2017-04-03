@@ -1,0 +1,32 @@
+{% extends 'layout.html' %}
+
+{% block title %}{{ template.template_type }} Message - {{ template.vrpage }}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h2 class="my-4">{{ template.template_type }} Message: {{ template.vrpage }}</h2>
+        <table class="table table-hover">
+            <tbody>
+                <tr>
+                    <th scope="row">VR Page</th>
+                    <td>{{ template.vrpage }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Template Type</th>
+                    <td>{{ template.template_type }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Subject</th>
+                    <td>{{ template.subject }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Message Body</th>
+                    <td>{{ template.message_body }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <a class="btn btn-primary" href="{% url 'vrpages:templates_list' %}" role="button">Go Back</a>
+        <a class="btn btn-success" href="{% url 'vrpages:edit_template' pk=template.pk %}" role="button">Edit</a>
+        <a class="btn btn-danger" href="{% url 'vrpages:delete_template' pk=template.pk %}" role="button">Delete</a>
+    </div>
+{% endblock %}

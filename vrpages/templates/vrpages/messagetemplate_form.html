@@ -1,0 +1,15 @@
+{% extends 'layout.html' %}
+
+{% block title %}Message Template{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h2 class="my-4">{% if not form.instance.pk %}Create Message Template{% else %}Edit {{ form.instance.vrpage }}Template{% endif %}</h2>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input class="btn btn-success" type="submit" value="Save">
+            <a class="btn btn-primary" href="{% url 'vrpages:templates_list' %}" role="button">Cancel</a>
+        </form>
+    </div>
+{% endblock %}

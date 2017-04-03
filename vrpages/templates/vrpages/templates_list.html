@@ -1,0 +1,34 @@
+{% extends 'layout.html' %}
+
+{% block title %}Templates List{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h2 class="my-4">Templates List</h2>
+        <table class="table table-hover">
+            <thead class="thead-default">
+                <tr>
+                    <th>#</th>
+                    <th>Subject</th>
+                    <th>Template Type</th>
+                    <th>VR Page</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for template in templates %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td><a href="{% url 'vrpages:template_detail' pk=template.pk %}">{{ template.subject }}</a></td>
+                    <td>{{ template.template_type }}</td>
+                    <td>{{ template.vrpage}}</td>
+                    <td><a href="{% url 'vrpages:edit_template' pk=template.pk %}">Edit</a></td>
+                    <td><a href="{% url 'vrpages:delete_template' pk=template.pk %}">Delete</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a class="btn btn-success" href="{% url 'vrpages:create_template' %}" role="button">Add Message Template</a>
+    </div>
+{% endblock %}

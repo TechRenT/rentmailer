@@ -1,0 +1,14 @@
+{% extends 'layout.html' %}
+
+{% block title %}Delete Message Template{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h4 class="my-4">Delete {{ messagetemplate.template_type }} Message Template of {{ messagetemplate.vrpage }}</h4>
+        <form method="POST">
+            {% csrf_token %}
+            <input class="btn btn-danger" type="submit" value="Delete">
+            <a class="btn btn-primary" href="{% url 'vrpages:template_detail' pk=messagetemplate.pk %}" role="button">Cancel</a>
+        </form>
+    </div>
+{% endblock %}
