@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
+from django.views.generic import CreateView, UpdateView, DeleteView
 
 from . import forms
 from . import models
@@ -17,6 +18,30 @@ def vrpages_list(request):
 def vrpage_detail(request, pk):
     vrpage = get_object_or_404(models.VRPage, pk=pk)
     return render(request, 'vrpages/vrpage_detail.html', {'vrpage': vrpage})
+
+
+class VRPageCreateView(CreateView):
+    fields = ("vrpage_name",
+              "email_address",
+              "email_username",
+              "email_username",
+              "email_password",
+              "email_server",
+              "email_from_name"
+    )
+    model = models.VRPage
+
+
+class VRPageUpdateView(UpdateView):
+    fields = ("vrpage_name",
+              "email_address",
+              "email_username",
+              "email_username",
+              "email_password",
+              "email_server",
+              "email_from_name"
+    )
+    model = models.VRPage
 
 def messages_list(request):
     messages = models.MessageTemplate.objects.all()

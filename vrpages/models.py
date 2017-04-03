@@ -1,3 +1,4 @@
+from django.core.urlresolvers import reverse
 from django.db import models
 
 # Create your models here.
@@ -12,6 +13,9 @@ class VRPage(models.Model):
 
     def __str__(self):
         return self.vrpage_name
+
+    def get_absolute_url(self):
+        return reverse("vrpages:vrpage_detail", kwargs={"pk": self.pk})
 
 
 class PolishedUrl(models.Model):
