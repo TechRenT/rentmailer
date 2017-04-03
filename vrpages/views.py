@@ -1,7 +1,7 @@
 import datetime
 
 from django.core.mail import send_mail
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, reverse_lazy
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
@@ -42,6 +42,12 @@ class VRPageUpdateView(UpdateView):
               "email_from_name"
     )
     model = models.VRPage
+
+
+class VRPageDeleteView(DeleteView):
+    model = models.VRPage
+    success_url = reverse_lazy('vrpages:vrpages_list')
+
 
 def messages_list(request):
     messages = models.MessageTemplate.objects.all()

@@ -1,0 +1,14 @@
+{% extends 'layout.html' %}
+
+{% block title %}VR Pages{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h2 class="my-4">Delete {{ vrpage }}?</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <input class="btn btn-danger" type="submit" value="Delete">
+            <a class="btn btn-primary" href="{% url 'vrpages:vrpage_detail' pk=vrpage.pk %}" role="button">Cancel</a>
+        </form>
+    </div>
+{% endblock %}

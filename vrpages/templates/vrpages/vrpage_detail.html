@@ -35,6 +35,6 @@
         </table>
         <a class="btn btn-primary" href="{% url 'vrpages:vrpages_list' %}" role="button">Go Back</a>
         <a class="btn btn-success" href="{% url 'vrpages:update_vrpage' pk=vrpage.pk %}" role="button">Edit</a>
-        <a class="btn btn-danger" href="#" role="button">Delete</a>
+        <a class="btn btn-danger" href="{% url 'vrpages:delete_vrpage' pk=vrpage.pk %}" role="button">Delete</a>
     </div>
 {% endblock %}
