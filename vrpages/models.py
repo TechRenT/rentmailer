@@ -59,3 +59,13 @@ class EmailMessage(models.Model):
 
     def __str__(self):
         return self.email
+
+
+class Unsubscribed(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    email = models.EmailField()
+    vrpage = models.ForeignKey(VRPage, blank=True, null=True)
+    permanent = models.BooleanField(default=False)
+    domain = models.CharField(max_length=50, blank=True)
+    entire_domain = models.BooleanField(default=False)
+
