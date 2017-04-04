@@ -63,9 +63,18 @@ class EmailMessage(models.Model):
 
 class Unsubscribed(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
-    email = models.EmailField()
+    email = models.EmailField(blank=True, null=True)
     vrpage = models.ForeignKey(VRPage, blank=True, null=True)
     permanent = models.BooleanField(default=False)
     domain = models.CharField(max_length=50, blank=True)
     entire_domain = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name_plural = "unsubscribes"
+
+    def __str__(self):
+        if self.email:
+            return self.email
+        elif self.domain:
+            return self.domain
 
