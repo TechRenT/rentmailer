@@ -85,6 +85,10 @@ def messages_list(request):
     messages = models.MessageTemplate.objects.all()
     return render(request, 'vrpages/messages_list.html', {'messages': messages})
 
+def unsubscribes_list(request):
+    unsubscribes = models.Unsubscribed.objects.all()
+    return render(request, 'vrpages/unsubscribes_list.html', {'unsubscribes': unsubscribes})
+
 def no_email(request, pk):
     vrpage = get_object_or_404(models.VRPage, pk=pk)
     return render(request, 'vrpages/no_email.html', {'vrpage': vrpage})
