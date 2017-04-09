@@ -1,0 +1,15 @@
+{% extends 'layout.html' %}
+
+{% block title %}Unsubscribe From VR Page{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h4 class="my-4">{% if not form.instance.pk %}Remove This Email From This VR Page Only{% else %}Edit {{ form.instance.vrpage }}{% endif %}</h4>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input class="btn btn-success" type="submit" value="Save">
+            <a class="btn btn-primary" href="{% url 'vrpages:unsubscribes_list' %}" role="button">Go Back</a>
+        </form>
+    </div>
+{% endblock %}

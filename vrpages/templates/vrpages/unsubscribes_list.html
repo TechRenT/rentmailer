@@ -33,6 +33,7 @@
                 {% endfor %}
             </tbody>
         </table>
-        <a class="btn btn-success" href="{% url 'vrpages:create_vrpage' %}" role="button">Add VR Page</a>
+        <a class="btn btn-danger" href="#" role="button">Unsubscribe Permanently</a>
+        <a class="btn btn-primary" href="{% url 'vrpages:unsubscribe_from_vrpage' %}" role="button">Remove Email From VR Page</a>
     </div>
 {% endblock %}

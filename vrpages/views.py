@@ -89,6 +89,15 @@ def unsubscribes_list(request):
     unsubscribes = models.Unsubscribed.objects.all()
     return render(request, 'vrpages/unsubscribes_list.html', {'unsubscribes': unsubscribes})
 
+def unsubscribe_from_vrpage(request):
+    form = forms.UnsubscribeFromVRPageForm()
+    if request.method == 'POST':
+        form = forms.UnsubscribeFromVRPageForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('vrpages:unsubscribes_list'))
+    return render(request, 'vrpages/unsubscribe_from_vrpage_form.html', {'form': form})
+
 def no_email(request, pk):
     vrpage = get_object_or_404(models.VRPage, pk=pk)
     return render(request, 'vrpages/no_email.html', {'vrpage': vrpage})
