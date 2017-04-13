@@ -1,0 +1,17 @@
+{% extends 'layout.html' %}
+
+{% block title %}Unsubscribe An Entire Domain{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h4 class="my-4">Unsubscribe An Entire Domain</h4>
+        <hr>
+        <strong>Example: @domain.com</strong>
+        <form class="mt-4" method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input class="btn btn-success" type="submit" value="Save">
+            <a class="btn btn-primary" href="{% url 'vrpages:unsubscribes_list' %}" role="button">Go Back</a>
+        </form>
+    </div>
+{% endblock %}

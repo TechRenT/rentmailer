@@ -18,4 +18,6 @@ urlpatterns = [
     url(r'^messages/(?P<pk>\d+)/(?P<template_type>\w+)/$', views.send_email, name='send_email'),
     url(r'^unsubscribes_list/$', views.unsubscribes_list, name='unsubscribes_list'),
     url(r'^create_unsubscribe_from_vrpage/$', views.unsubscribe_from_vrpage, name='unsubscribe_from_vrpage'),
+    url(r'^create_unsubscribe_permanently/$', views.unsubscribe_permanently, name='unsubscribe_permanently'),
+    url(r'^create_unsubscribe_entire_domain/$', views.unsubscribe_entire_domain, name='unsubscribe_entire_domain'),
 ]

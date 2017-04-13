@@ -1,0 +1,16 @@
+{% extends 'layout.html' %}
+
+{% block title %}Unsubscribe Permanently{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h4 class="my-4">Unsubscribe This Email Permanently and Never Email It Again</h4>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input class="btn btn-success" type="submit" value="Save">
+            <a class="btn btn-primary" href="{% url 'vrpages:unsubscribes_list' %}" role="button">Go Back</a>
+        </form>
+        <p class="mt-5"><a href="{% url 'vrpages:unsubscribe_entire_domain' %}">Unsubscribe An Entire Domain</a></p>
+    </div>
+{% endblock %}

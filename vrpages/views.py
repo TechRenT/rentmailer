@@ -98,6 +98,28 @@ def unsubscribe_from_vrpage(request):
             return HttpResponseRedirect(reverse('vrpages:unsubscribes_list'))
     return render(request, 'vrpages/unsubscribe_from_vrpage_form.html', {'form': form})
 
+def unsubscribe_permanently(request):
+    form = forms.UnsubscribePermanentlyForm()
+    if request.method == 'POST':
+        form = forms.UnsubscribePermanentlyForm(request.POST)
+        if form.is_valid():
+            email = form.save(commit=False)
+            email.permanent = True
+            email.save()
+            return HttpResponseRedirect(reverse('vrpages:unsubscribes_list'))
+    return render(request, 'vrpages/unsubscribe_permanently_form.html', {'form': form})
+
+def unsubscribe_entire_domain(request):
+    form = forms.UnsubscribeEntireDomainForm()
+    if request.method == 'POST':
+        form = forms.UnsubscribeEntireDomainForm(request.POST)
+        if form.is_valid():
+            domain = form.save(commit=False)
+            domain.entire_domain = True
+            domain.save()
+            return HttpResponseRedirect(reverse('vrpages:unsubscribes_list'))
+    return render(request, 'vrpages/unsubscribe_entire_domain_form.html', {'form': form})
+
 def no_email(request, pk):
     vrpage = get_object_or_404(models.VRPage, pk=pk)
     return render(request, 'vrpages/no_email.html', {'vrpage': vrpage})
