@@ -94,6 +94,11 @@ def unsubscribe_from_vrpage(request):
     if request.method == 'POST':
         form = forms.UnsubscribeFromVRPageForm(request.POST)
         if form.is_valid():
+            email = form.cleaned_data['email']
+            vrpage = form.cleaned_data['vrpage']
+            polished_url = models.PolishedUrl.objects.get(polished_email=email, vrpage=vrpage)
+            polished_url.unsubscribe_from_vrpage = True
+            polished_url.save()
             form.save()
             return HttpResponseRedirect(reverse('vrpages:unsubscribes_list'))
     return render(request, 'vrpages/unsubscribe_from_vrpage_form.html', {'form': form})
