@@ -9,6 +9,7 @@ from django.views.generic import CreateView, UpdateView, DeleteView
 
 from . import forms
 from . import models
+from .resources import PolishedUrlResource
 
 # Create your views here.
 def vrpages_list(request):
@@ -47,6 +48,9 @@ class VRPageUpdateView(UpdateView):
 class VRPageDeleteView(DeleteView):
     model = models.VRPage
     success_url = reverse_lazy('vrpages:vrpages_list')
+
+
+def 
 
 
 def templates_list(request):
@@ -108,6 +112,8 @@ def unsubscribe_permanently(request):
     if request.method == 'POST':
         form = forms.UnsubscribePermanentlyForm(request.POST)
         if form.is_valid():
+            email_input = form.cleaned_data['email']
+            models.PolishedUrl.objects.filter(polished_email=email_input).update(unsubscribe_permanently=True)
             email = form.save(commit=False)
             email.permanent = True
             email.save()
@@ -119,6 +125,12 @@ def unsubscribe_entire_domain(request):
     if request.method == 'POST':
         form = forms.UnsubscribeEntireDomainForm(request.POST)
         if form.is_valid():
+            domain_input = form.cleaned_data['domain']
+            polished_urls = models.PolishedUrl.objects.all()
+            for polished_url in polished_urls:
+                if domain_input in polished_url.polished_email:
+                    polished_url.unsubscribe_permanently = True
+                    polished_url.save()
             domain = form.save(commit=False)
             domain.entire_domain = True
             domain.save()

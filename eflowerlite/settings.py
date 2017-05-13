@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'widget_tweaks',
+    'import_export',
     'vrpages',
 ]
 
@@ -147,3 +148,5 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 #DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+IMPORT_EXPORT_USE_TRANSACTIONS = True
