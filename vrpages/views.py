@@ -1,4 +1,5 @@
 import datetime
+from tablib import Dataset
 
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse, reverse_lazy
@@ -9,7 +10,7 @@ from django.views.generic import CreateView, UpdateView, DeleteView
 
 from . import forms
 from . import models
-from .resources import PolishedUrlResource
+from .resources import PolishedUrlResource, handle_uploaded_file, csv_reader
 
 # Create your views here.
 def vrpages_list(request):
@@ -50,7 +51,54 @@ class VRPageDeleteView(DeleteView):
     success_url = reverse_lazy('vrpages:vrpages_list')
 
 
-def 
+def polished_url_upload(request):
+    form = forms.PolishedUrlUpload()
+    if request.method == "POST":
+        form = forms.PolishedUrlUpload(request.POST, request.FILES)
+        if form.is_valid():
+            vrpage = form.cleaned_data['vrpage']
+            polished_urls = []
+
+            polished_email_for_vrpage = [
+                polished_url.polished_email.lower()
+                for polished_url in
+                models.PolishedUrl.objects.filter(vrpage=vrpage)
+            ]
+
+            unsubscribe_emails = [
+                unsubscribe.email.lower()
+                for unsubscribe in
+                models.Unsubscribed.objects.filter(permanent=True)
+            ]
+
+            unsubscribe_domain = [
+                domain.domain.lower()
+                for domain in
+                models.Unsubscribed.objects.filter(entire_domain=True)
+            ]
+
+            handle_uploaded_file(request.FILES['file'])
+            csv_reader('media/polished_urls.csv', polished_urls)
+            for url in polished_urls:
+                if url[1] in polished_email_for_vrpage:
+                    continue
+                if url[1] in unsubscribe_emails:
+                    continue
+
+                email_domain_index = url[1].index('@')
+                email_domain = url[1][email_domain_index:]
+                if email_domain in unsubscribe_domain:
+                    continue
+
+                polished_url = models.PolishedUrl()
+                polished_url.vrpage = vrpage
+                polished_url.polished_url = url[0]
+                polished_url.polished_email = url[1]
+                polished_url.page_title = url[2]
+                polished_url.contact_name = url[3]
+                polished_url.anchor_text = url[4]
+                polished_url.save()
+    return render(request, 'vrpages/polished_url_upload.html', {'form': form})
 
 
 def templates_list(request):
@@ -192,7 +240,7 @@ def send_email(request, pk, template_type):
             first_message_sent_date = first_message.created_at
             now = timezone.now()
             gap = now - first_message_sent_date
-            if gap >= datetime.timedelta(minutes=10):
+            if gap >= datetime.timedelta(minutes=60):
                 message_variables = {'contactname': polished_url.contact_name,
                                  'url': polished_url.polished_url,
                                  'anchortext': polished_url.anchor_text,

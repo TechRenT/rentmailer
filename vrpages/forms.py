@@ -4,6 +4,11 @@ from django.core.exceptions import ObjectDoesNotExist
 from . import models
 
 
+class PolishedUrlUpload(forms.Form):
+    vrpage = forms.ModelChoiceField(queryset=models.VRPage.objects.all())
+    file = forms.FileField()
+
+
 class SendEmailForm(forms.ModelForm):
     class Meta:
         model = models.EmailMessage

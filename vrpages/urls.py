@@ -8,6 +8,7 @@ urlpatterns = [
     url(r'^create/$', views.VRPageCreateView.as_view(), name='create_vrpage'),
     url(r'^edit/(?P<pk>\d+)/$', views.VRPageUpdateView.as_view(), name='update_vrpage'),
     url(r'^delete/(?P<pk>\d+)/$', views.VRPageDeleteView.as_view(), name='delete_vrpage'),
+    url(r'^uploads/$', views.polished_url_upload, name='upload'),
     url(r'^templates_list/$', views.templates_list, name='templates_list'),
     url(r'^template/(?P<pk>\d+)/$', views.template_detail, name='template_detail'),
     url(r'^create_template/$', views.MessageTemplateCreateView.as_view(), name='create_template'),
