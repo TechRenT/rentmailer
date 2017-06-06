@@ -1,6 +1,8 @@
 import datetime
 from tablib import Dataset
 
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.http import HttpResponseRedirect
@@ -12,17 +14,20 @@ from . import forms
 from . import models
 from .resources import PolishedUrlResource, handle_uploaded_file, csv_reader
 
-# Create your views here.
+
+@login_required
 def vrpages_list(request):
     vrpages = models.VRPage.objects.all()
     return render(request, 'vrpages/vrpages_list.html', {'vrpages': vrpages})
 
+
+@login_required
 def vrpage_detail(request, pk):
     vrpage = get_object_or_404(models.VRPage, pk=pk)
     return render(request, 'vrpages/vrpage_detail.html', {'vrpage': vrpage})
 
 
-class VRPageCreateView(CreateView):
+class VRPageCreateView(LoginRequiredMixin, CreateView):
     fields = ("vrpage_name",
               "email_address",
               "email_username",
@@ -34,7 +39,7 @@ class VRPageCreateView(CreateView):
     model = models.VRPage
 
 
-class VRPageUpdateView(UpdateView):
+class VRPageUpdateView(LoginRequiredMixin, UpdateView):
     fields = ("vrpage_name",
               "email_address",
               "email_username",
@@ -46,11 +51,12 @@ class VRPageUpdateView(UpdateView):
     model = models.VRPage
 
 
-class VRPageDeleteView(DeleteView):
+class VRPageDeleteView(LoginRequiredMixin, DeleteView):
     model = models.VRPage
     success_url = reverse_lazy('vrpages:vrpages_list')
 
 
+@login_required
 def polished_url_upload(request):
     form = forms.PolishedUrlUpload()
     if request.method == "POST":
@@ -101,16 +107,19 @@ def polished_url_upload(request):
     return render(request, 'vrpages/polished_url_upload.html', {'form': form})
 
 
+@login_required
 def templates_list(request):
     templates = models.MessageTemplate.objects.all()
     return render(request, 'vrpages/templates_list.html', {'templates': templates})
 
+
+@login_required
 def template_detail(request, pk):
     template = get_object_or_404(models.MessageTemplate, pk=pk)
     return render(request, 'vrpages/template_detail.html', {'template': template})
 
 
-class MessageTemplateCreateView(CreateView):
+class MessageTemplateCreateView(LoginRequiredMixin, CreateView):
     fields = ("vrpage",
               "template_type",
               "subject",
@@ -119,7 +128,7 @@ class MessageTemplateCreateView(CreateView):
     model = models.MessageTemplate
 
 
-class MessageTemplateUpdateView(UpdateView):
+class MessageTemplateUpdateView(LoginRequiredMixin, UpdateView):
     fields = ("vrpage",
               "template_type",
               "subject",
@@ -128,19 +137,24 @@ class MessageTemplateUpdateView(UpdateView):
     model = models.MessageTemplate
 
 
-class MessageTemplateDeleteView(DeleteView):
+class MessageTemplateDeleteView(LoginRequiredMixin, DeleteView):
     model = models.MessageTemplate
     success_url = reverse_lazy('vrpages:templates_list')
 
 
+@login_required
 def messages_list(request):
     messages = models.MessageTemplate.objects.all()
     return render(request, 'vrpages/messages_list.html', {'messages': messages})
 
+
+@login_required
 def unsubscribes_list(request):
     unsubscribes = models.Unsubscribed.objects.all()
     return render(request, 'vrpages/unsubscribes_list.html', {'unsubscribes': unsubscribes})
 
+
+@login_required
 def unsubscribe_from_vrpage(request):
     form = forms.UnsubscribeFromVRPageForm()
     if request.method == 'POST':
@@ -155,6 +169,8 @@ def unsubscribe_from_vrpage(request):
             return HttpResponseRedirect(reverse('vrpages:unsubscribes_list'))
     return render(request, 'vrpages/unsubscribe_from_vrpage_form.html', {'form': form})
 
+
+@login_required
 def unsubscribe_permanently(request):
     form = forms.UnsubscribePermanentlyForm()
     if request.method == 'POST':
@@ -168,6 +184,8 @@ def unsubscribe_permanently(request):
             return HttpResponseRedirect(reverse('vrpages:unsubscribes_list'))
     return render(request, 'vrpages/unsubscribe_permanently_form.html', {'form': form})
 
+
+@login_required
 def unsubscribe_entire_domain(request):
     form = forms.UnsubscribeEntireDomainForm()
     if request.method == 'POST':
@@ -185,10 +203,14 @@ def unsubscribe_entire_domain(request):
             return HttpResponseRedirect(reverse('vrpages:unsubscribes_list'))
     return render(request, 'vrpages/unsubscribe_entire_domain_form.html', {'form': form})
 
+
+@login_required
 def no_email(request, pk):
     vrpage = get_object_or_404(models.VRPage, pk=pk)
     return render(request, 'vrpages/no_email.html', {'vrpage': vrpage})
 
+
+@login_required
 def send_email(request, pk, template_type):
     vrpage = models.VRPage.objects.get(pk=pk)
     message_template = models.MessageTemplate.objects.get(vrpage_id=pk, template_type=template_type)
